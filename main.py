@@ -49,12 +49,7 @@ def choose_hdpe_diameter(database: dict, grade: str, sdr: float) -> dict:
     print(f"\nAvailable outside diameters for {grade}, SDR {sdr:g}:")
     for index, pipe in enumerate(records, start=1):
         od = pipe["dn_od_mm"]
-        wall = pipe["nominal_wall_thickness_mm"]
-        inside = od - 2 * wall
-        print(
-            f"{index}. OD {od:g} mm | wall {wall:g} mm | "
-            f"calculated ID {inside:g} mm"
-        )
+        print(f"{index}. OD {od:g} mm")
     while True:
         try:
             choice = int(input("Enter diameter option number: ").strip())
@@ -120,8 +115,7 @@ def main() -> None:
         print(
             f"Selected pipe: {grade}, SDR {sdr_choice['value']:g}, "
             f"OD {pipe_record['dn_od_mm']:g} mm, "
-            f"wall {pipe_record['nominal_wall_thickness_mm']:g} mm, "
-            f"ID {diameter_m * 1000:.2f} mm"
+            f"calculated ID {diameter_m * 1000:.2f} mm"
         )
     else:
         diameter_m = ask_float("Enter pipe internal diameter (mm): ", minimum=0) / 1000.0
