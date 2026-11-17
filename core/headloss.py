@@ -16,7 +16,7 @@ def calculate_head_loss(
     roughness_mm: float,
     minor_loss_k: float = 0.0,
 ) -> dict[str, float | str | None]:
-    """Calculate velocity, Reynolds number and major/minor/total head loss."""
+    """Calculate flow regime and major/minor/total head loss."""
     values = (flow_m3_h, length_m, internal_diameter_m, roughness_mm, minor_loss_k)
     if any(not math.isfinite(float(value)) for value in values):
         raise ValueError("All inputs must be finite numbers")
@@ -29,8 +29,15 @@ def calculate_head_loss(
     area_m2 = math.pi * internal_diameter_m**2 / 4.0
     velocity_m_s = flow_m3_s / area_m2
     reynolds = velocity_m_s * internal_diameter_m / WATER_KINEMATIC_VISCOSITY_M2_S
-    relative_roughness = (roughness_mm / 1000.0) / internal_diameter_m
 
+    if reynolds < 2300:
+        flow_regime = "Laminar (آرام)"
+    elif reynolds <= 4000:
+        flow_regime = "Transitional (گذار)"
+    else:
+        flow_regime = "Turbulent (مغشوش/آشفته)"
+
+    relative_roughness = (roughness_mm / 1000.0) / internal_diameter_m
     friction_factor, warning = darcy_friction_factor(reynolds, relative_roughness)
     velocity_head_m = velocity_m_s**2 / (2.0 * GRAVITY_M_S2)
     major_head_m = friction_factor * (length_m / internal_diameter_m) * velocity_head_m
@@ -45,6 +52,7 @@ def calculate_head_loss(
         "roughness_mm": roughness_mm,
         "velocity_m_s": velocity_m_s,
         "reynolds": reynolds,
+        "flow_regime": flow_regime,
         "friction_factor_darcy": friction_factor,
         "velocity_head_m": velocity_head_m,
         "major_head_loss_m": major_head_m,
