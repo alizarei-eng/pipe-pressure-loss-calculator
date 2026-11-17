@@ -148,6 +148,7 @@ def main() -> None:
     print(f"Pipe internal diameter    : {result['internal_diameter_mm']:.2f} mm")
     print(f"Flow velocity             : {result['velocity_m_s']:.3f} m/s")
     print(f"Reynolds number           : {result['reynolds']:.0f}")
+    print(f"Flow regime               : {result['flow_regime']}")
     print(f"Darcy friction factor     : {result['friction_factor_darcy']:.5f}")
     print(f"Total minor-loss K        : {total_k:.3f}")
     print("-" * 62)
