@@ -31,11 +31,11 @@ def calculate_head_loss(
     reynolds = velocity_m_s * internal_diameter_m / WATER_KINEMATIC_VISCOSITY_M2_S
 
     if reynolds < 2300:
-        flow_regime = "Laminar (آرام)"
+        flow_regime = "Laminar"
     elif reynolds <= 4000:
-        flow_regime = "Transitional (گذار)"
+        flow_regime = "Transitional"
     else:
-        flow_regime = "Turbulent (مغشوش/آشفته)"
+        flow_regime = "Turbulent"
 
     relative_roughness = (roughness_mm / 1000.0) / internal_diameter_m
     friction_factor, warning = darcy_friction_factor(reynolds, relative_roughness)
