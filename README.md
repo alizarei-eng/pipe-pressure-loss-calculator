@@ -45,10 +45,10 @@ Illustrative inputs: Q=50 m³/h, ID=100 mm, L=100 m, absolute roughness=0.007 mm
 - Area = π(0.1)²/4 = 0.007854 m²
 - Velocity ≈ 1.768 m/s
 - Reynolds ≈ 1.99×10⁵ (turbulent)
-- With a Darcy friction factor around 0.018–0.019, major loss ≈ 2.9–3.0 m
+- With a Darcy friction factor around 0.0158, major loss ≈ 2.52 m
 - Minor loss = 5×(1.768²/(2×9.80665)) ≈ 0.80 m
-- Total head loss ≈ 3.7–3.8 m
-- Pressure drop ≈ 0.36 bar
+- Total head loss ≈ 3.31 m
+- Pressure drop ≈ 0.32 bar
 
 این مثال صرفاً آموزشی است. مقدار دقیق ضریب اصطکاک و افت خروجی برنامه به خواص سیال و محاسبه عددی الگوریتم وابسته است. برای خط واقعی، ID واقعی، زبری متناسب با وضعیت لوله و K متناظر با هندسه واقعی را وارد کنید.
 
