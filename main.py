@@ -158,6 +158,10 @@ def main() -> None:
     print(f"Estimated density         : {fluid.density_kg_m3:.3f} kg/m3")
     print(f"Estimated dynamic viscosity: {fluid.dynamic_viscosity_pa_s:.6g} Pa.s")
     print(f"Estimated kinematic viscosity: {fluid.kinematic_viscosity_m2_s:.6g} m2/s")
+    if fluid.estimated_ions_mg_l:
+        print("\\nEstimated ionic profile (mg/L; seawater ratios assumed):")
+        for ion, concentration in fluid.estimated_ions_mg_l.items():
+            print(f"  {ion:36s}: {concentration:10.2f}")
     for warning in fluid.warnings:
         print(f"NOTE: {warning}")
 
