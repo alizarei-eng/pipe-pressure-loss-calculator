@@ -1,55 +1,21 @@
 # Pipe Pressure Loss Calculator
 
-A Python command-line engineering tool for calculating major and minor hydraulic head losses in pressurized pipes.
+Interactive Python calculator for Darcy-Weisbach major losses and K-based minor losses.
 
-**Primary result:** total head loss in metres of water column (mH2O).
-
-## Initial features
-
-- Darcy-Weisbach major head-loss calculation.
-- Laminar Darcy friction factor and iterative Colebrook-White solution for turbulent flow.
-- Minor losses from numbered fitting and valve menus.
-- Numbered material, HDPE grade, SDR, and pipe-size selection.
-- HDPE dimensions imported from the companion `hdpe-pipe-diameter-selector` project's JSON reference database.
-- Supporting outputs: velocity, Reynolds number, Darcy friction factor, and equivalent pressure drop.
+## Current features
+- HDPE dimensions from the shared 506-record pipe catalogue; other pipe materials use manual ID.
+- Numbered menus for material, grade, SDR, diameter and fittings.
+- EC-based estimates for TDS, density and viscosity.
+- Density and kinematic viscosity are passed into the hydraulic calculation: viscosity affects Reynolds number/friction factor; density converts head loss to pressure drop.
+- Flow regime output: Laminar, Transitional, Turbulent.
 
 ## Run
-
-Python 3.10 or newer is recommended.
-
-```powershell
-python -m venv .venv
-.venv\Scripts\Activate.ps1
+```bash
 python main.py
-```
-
-Run tests:
-
-```powershell
 python -m unittest discover -s tests -v
 ```
 
-## Calculation basis
+## EC model limitations
+TDS ≈ EC(µS/cm) × selected factor (default 0.65). EC must be temperature-compensated to 25 °C. Generic water mode does not invent individual ion concentrations. Optional natural-seawater ratios are estimates only and are not valid by default for groundwater or RO concentrate. Density and viscosity are approximate screening estimates; use laboratory/validated properties for concentrated brine and final design.
 
-```
-Q = flow rate converted from m3/h to m3/s
-A = pi * D^2 / 4
-V = Q / A
-Re = V * D / nu
-hf = f * (L / D) * (V^2 / (2*g))
-hm = sum(K) * (V^2 / (2*g))
-htotal = hf + hm
-```
-
-The friction factor is the **Darcy** friction factor, not the Fanning factor.
-
-## Data notes and limitations
-
-- The HDPE dimensional database is imported from the companion project without changing its records or caveats. Some wall thicknesses are ratio-derived and require verification against a controlled copy of the applicable standard before design use.
-- Roughness and fitting K values are indicative defaults. Actual values depend on pipe condition, fitting geometry, manufacturer, and installation.
-- In this initial version, HDPE uses the dimensional database. Other materials require a manually entered internal diameter.
-- Water properties are held at a 20 °C reference condition; temperature is not a user input in this version.
-- The transition region (Re 2300–4000) is flagged because friction-factor prediction is uncertain.
-- This tool calculates steady-state pipe losses only. It does not yet model elevation change, pumps, transients/water hammer, non-Newtonian fluids, or networks.
-
-This software is an engineering aid, not a substitute for project-specific verification.
+This calculator is steady-state and single-diameter per calculation. It does not yet calculate static elevation, pump TDH, network hydraulics or water hammer.
