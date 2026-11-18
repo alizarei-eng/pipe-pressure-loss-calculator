@@ -1,106 +1,41 @@
-# Engineering Guide | راهنمای مهندسی
-## Pipe Pressure Loss Calculator | محاسبه‌گر افت فشار لوله
+# راهنمای مهندسی محاسبه‌گر افت فشار
 
-## 1. Purpose | هدف
-**EN:** Calculate major friction loss and minor fitting loss in a steady, single-path pipe calculation. The primary result is head loss in metres of the flowing fluid; pressure drop is derived using fluid density.
+## بخش فارسی
 
-**FA:** محاسبه افت اصطکاکی طولی و افت موضعی فیتینگ‌ها در یک مسیر جریان پایا. خروجی اصلی افت هد بر حسب متر سیال است و افت فشار با استفاده از چگالی محاسبه می‌شود.
+این برنامه افت طولی و موضعی یک بخش لوله با قطر داخلی ثابت و دبی پایا را محاسبه می‌کند.
 
-## 2. Inputs | ورودی‌ها
-- Fluid EC (mS/cm), already compensated to 25°C | EC بر حسب mS/cm و جبران‌شده تا ۲۵ درجه
-- Actual operating temperature (°C) | دمای واقعی کارکرد آب
-- Composition profile: generic or natural seawater | پروفایل آب عمومی یا آب دریای طبیعی
-- Pipe material; HDPE grade, SDR and OD, or ID for other materials | جنس لوله؛ برای HDPE گرید، SDR و OD؛ برای سایر مواد ID
-- Flow rate (m³/h), straight length (m) | دبی و طول مستقیم
-- Fitting types and quantities | نوع و تعداد فیتینگ‌ها
-- Roughness from database or explicit override where available | زبری بانک یا مقدار جایگزین در صورت ارائه گزینه
+### روابط
+`V=Q/A`
+`Re=VD/ν`
+`hf=f(L/D)(V²/2g)`
+`hm=ΣK(V²/2g)`
+`ΔP=ρg(hf+hm)`
 
-## 3. Geometry | هندسه
-For HDPE, the database supplies nominal wall thickness and the program calculates nominal ID:
-`ID = OD - 2e`.
-For other materials, the current CLI requests internal diameter directly. Convert mm to m before hydraulic calculations.
+### مثال
+برای Q=50 m³/h، قطر داخلی 100 mm، طول 100 m، زبری 0.0015 mm و مجموع K=5، سرعت حدود 1.768 m/s است. با f≈0.0158، افت طولی حدود 2.52 m و افت موضعی حدود 0.80 m است؛ افت کل حدود 3.31 m و افت فشار حدود 0.32 bar خواهد بود.
 
-برای HDPE ضخامت اسمی از بانک خوانده و قطر داخلی از رابطه بالا محاسبه می‌شود. برای سایر مواد، نسخه فعلی قطر داخلی را مستقیماً از کاربر می‌گیرد. محاسبات هیدرولیکی با واحد متر انجام می‌شوند.
+### کاربردها
+محاسبه افت یک بخش مستقیم، مقایسه قطر و زبری و بررسی سهم اتصالات در افت فشار.
 
-## 4. Hydraulic equations | معادلات هیدرولیکی
-`Q_s = Q_h/3600`
-`A = πD²/4`
-`V = Q_s/A`
-`Re = VD/ν`
-`ε_r = ε/D`
-`hf = f(L/D)(V²/(2g))`
-`hm = K_total(V²/(2g))`
-`h_total = hf + hm`
-`ΔP = ρg h_total`
+### محدودیت‌ها
+هر محاسبه یک قطر و دبی دارد. اتصالات با قطر متفاوت باید جداگانه و با سرعت محلی محاسبه شوند. شبکه شاخه‌دار، هد ارتفاعی، افت تجهیزات، TDH، منحنی پمپ، NPSH و ضربه قوچ پشتیبانی نمی‌شوند.
 
-The roughness ε and diameter D must use the same unit. In the implementation, roughness is entered/stored in mm and converted to metres for relative roughness.
+## English Section
 
-زبری مطلق و قطر باید هم‌واحد باشند. برنامه زبری میلی‌متری را برای محاسبه زبری نسبی به متر تبدیل می‌کند.
+This application calculates major and minor losses for one steady-flow pipe section with a single internal diameter.
 
-## 5. Flow regime and friction factor | رژیم جریان و ضریب اصطکاک
-- Re < 2300: Laminar; f=64/Re.
-- 2300 ≤ Re ≤ 4000: Transitional; result is flagged as uncertain.
-- Re > 4000: Turbulent; iterative Colebrook-type relation.
+### Equations
+`V=Q/A`
+`Re=VD/ν`
+`hf=f(L/D)(V²/2g)`
+`hm=ΣK(V²/2g)`
+`ΔP=ρg(hf+hm)`
 
-این حدود برای طبقه‌بندی جریان در برنامه استفاده می‌شوند. ناحیه گذار ذاتاً حساس است؛ نتیجه را با احتیاط تفسیر کنید. ضریب استفاده‌شده Darcy است، نه Fanning؛ این دو چهار برابر اختلاف دارند.
+### Worked example
+For Q=50 m³/h, ID=100 mm, L=100 m, roughness=0.0015 mm and total K=5, velocity is about 1.768 m/s. With f≈0.0158, major loss is about 2.52 m and minor loss about 0.80 m; total loss is about 3.31 m and pressure drop about 0.32 bar.
 
-## 6. Worked example | مثال کامل
-Given Q=50 m³/h, D=0.100 m, L=100 m, ε=0.0015 mm, Ktotal=5, ρ=997 kg/m³ and ν=0.89×10⁻⁶ m²/s:
+### Suitable applications
+Loss calculation for one straight section, diameter and roughness comparison, and evaluation of fitting contribution.
 
-1. Q = 50/3600 = 0.013889 m³/s.
-2. A = π×0.1²/4 = 0.007854 m².
-3. V = 0.013889/0.007854 ≈ 1.768 m/s.
-4. Re = 1.768×0.1/(0.89×10⁻⁶) ≈ 1.99×10⁵; turbulent.
-5. Relative roughness = 0.000007/0.1 = 0.00007.
-6. For f≈0.0158, hf≈0.0158×(100/0.1)×(1.768²/(2×9.80665)) ≈ 2.52 m.
-7. hm = 5×(1.768²/(2×9.80665)) ≈ 0.80 m.
-8. Total head loss ≈ 3.31 m.
-9. ΔP ≈ 997×9.80665×3.31/100000 ≈ 0.324 bar.
-
-مقادیر مثال تقریبی‌اند؛ اختلاف جزئی با خروجی برنامه به حل عددی f و خواص سیال بستگی دارد. افت فشار فقط برای طول و فیتینگ‌های واردشده معتبر است؛ افت تجهیزات فرایندی در این برنامه جداگانه مدل نشده است.
-
-## 7. Fittings and K values | فیتینگ‌ها و ضرایب K
-The user selects a fitting record and enters its quantity. The program adds K×quantity to the running total. Minor loss is then calculated using the reference pipe velocity. Real K depends on fitting geometry, diameter ratio, opening, flow path and Reynolds number; use manufacturer or validated references for critical design.
-
-کاربر نوع فیتینگ و تعداد را انتخاب می‌کند و برنامه Kها را جمع می‌زند. افت موضعی با سرعت لوله مرجع محاسبه می‌شود. K واقعی به هندسه، نسبت قطرها، میزان بازشدگی شیر، مسیر جریان و Reynolds وابسته است؛ برای طراحی حساس از داده معتبر استفاده کنید.
-
-## 8. EC and temperature | EC و دما
-EC is entered as a value already temperature-compensated to 25°C. Operating temperature is a separate input used for the water-property estimate. The internal TDS factor is 0.65; it is not a user-entered conversion parameter. Generic mode does not invent ion concentrations. Natural seawater mode reports assumed ion ratios only.
-
-EC باید از قبل به ۲۵ درجه جبران شده باشد. دمای کارکرد ورودی مستقلی است و در تخمین چگالی و ویسکوزیته استفاده می‌شود. ضریب TDS درون برنامه ۰٫۶۵ است و ورودی کاربر نیست. حالت عمومی یون‌های منفرد را حدس نمی‌زند؛ حالت آب دریا نسبت‌های فرضی را گزارش می‌کند.
-
-## 9. Result interpretation | تفسیر نتایج
-- Velocity: average cross-sectional velocity | سرعت متوسط مقطع
-- Reynolds and flow regime: flow classification | عدد Reynolds و طبقه‌بندی رژیم
-- Darcy friction factor: dimensionless major-loss coefficient | ضریب بی‌بعد افت طولی
-- Major head loss: straight-pipe friction loss | افت طولی
-- Minor head loss: fitting/valve loss | افت موضعی
-- Total head loss: sum of major and minor | مجموع افت‌ها
-- Pressure drop: equivalent pressure difference for supplied density | افت فشار معادل با چگالی ورودی
-
-## 10. Limitations and design checks | محدودیت‌ها و کنترل طراحی
-The calculation is steady-state and single-path. It does not include elevation, pump TDH, branched networks, multiple reference diameters, equipment pressure drops, pump curves, NPSH or water hammer. The EC model is approximate, especially for concentrated brines. Confirm actual internal diameter, pipe condition, roughness, fitting K, fluid properties and operating flow before using results for design or procurement.
-
-محاسبه پایا و تک‌مسیره است و ارتفاع، TDH، شبکه شاخه‌دار، چند قطر، افت تجهیزات، منحنی پمپ، NPSH یا ضربه قوچ را شامل نمی‌شود. مدل EC به‌ویژه برای شورابه غلیظ تقریبی است. پیش از استفاده طراحی، قطر واقعی، وضعیت لوله، زبری، K، خواص سیال و دبی را کنترل کنید.
-
-## 11. Tests | تست‌ها
-```bash
-python -m unittest discover -s tests -v
-```
-
-## 12. Suitable applications and decision boundary | موارد کاربرد و مرز استفاده
-**EN:** Use this calculator for a single, steady-flow pipe section when its flow rate, internal diameter, length, roughness and fitting K values are known or can be estimated. It is suitable for preliminary pressure-drop checks, comparing pipe sizes or roughness assumptions, and understanding the contribution of fittings.
-
-**FA:** این محاسبه‌گر برای یک بخش لوله با جریان پایا مناسب است؛ زمانی که دبی، قطر داخلی، طول، زبری و ضرایب K اتصالات معلوم یا قابل تخمین باشند. از آن برای کنترل اولیه افت فشار، مقایسه قطرها یا زبری‌ها و بررسی سهم اتصالات استفاده کنید.
-
-**Example | مثال:** A 100 m straight section with ID=100 mm carries 50 m³/h. The program calculates velocity and Reynolds number, then major loss. If the selected fittings have total K=5, their minor loss is calculated using the velocity in this same 100 mm reference pipe. The output is the head loss for this section and its entered fittings—not the complete plant's pump TDH.
-
-**FA:** برای نمونه، یک لوله مستقیم ۱۰۰ متری با قطر داخلی ۱۰۰ میلی‌متر و دبی ۵۰ مترمکعب بر ساعت بررسی می‌شود. برنامه سرعت و Reynolds و سپس افت طولی را محاسبه می‌کند. اگر مجموع K اتصالات ۵ باشد، افت موضعی با سرعت همین لوله ۱۰۰ میلی‌متری محاسبه می‌شود. خروجی مربوط به همین بخش و اتصالات واردشده است، نه TDH کامل کارخانه.
-
-**When to split the calculation | چه زمانی محاسبه را تفکیک کنیم؟**
-- Different pipe diameters or materials along the route: calculate each uniform section separately. | قطر یا جنس لوله در طول مسیر تغییر می‌کند: هر بخش یکنواخت را جداگانه محاسبه کنید.
-- Fittings installed on a different diameter: calculate their K loss with the velocity in the relevant diameter, not the main section's velocity. | اتصالات روی قطر دیگری نصب شده‌اند: افت آن‌ها را با سرعت همان قطر محاسبه کنید، نه سرعت بخش اصلی.
-- Flow divides or combines: use a branched-network solver. | دبی تقسیم یا ترکیب می‌شود: از حل‌کننده شبکه شاخه‌دار استفاده کنید.
-- Elevation, equipment differential pressure or pump duty matters: use a TDH/system calculation that includes those terms. | ارتفاع، افت فشار تجهیزات یا وظیفه پمپ مهم است: از محاسبه TDH/سیستم با این مؤلفه‌ها استفاده کنید.
-
-The tool reports a Darcy friction factor. Do not mix it with a Fanning friction factor. Transitional Reynolds numbers (2300–4000) are flagged because friction-factor prediction is uncertain. The EC-derived fluid model is for screening only; use measured properties for concentrated brine or critical design.
+### Limitations
+Each calculation uses one diameter and flow rate. Fittings on different diameters must be calculated separately using local velocity. Branched networks, elevation head, equipment losses, TDH, pump curves, NPSH and water hammer are not supported.
