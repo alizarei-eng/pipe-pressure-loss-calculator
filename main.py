@@ -92,7 +92,7 @@ def collect_fluid_properties():
     profile = "natural_seawater" if profile_choice == "2" else "generic"
     ec = ask_float("Electrical conductivity EC (mS/cm, temperature-compensated to 25 °C): ", minimum=0, allow_zero=True)
     temperature = ask_float("Water temperature (°C): ", minimum=0, allow_zero=True)
-    factor = ask_float("TDS conversion factor [0.65]: ", minimum=0)
+    factor = ask_float("TDS conversion factor [0.65]: ", minimum=0, allow_zero=True)
     if factor == 0:
         factor = 0.65
     return estimate_from_ec(
