@@ -63,3 +63,26 @@ Steady-state, single flow path and one reference diameter per calculation. No st
 محاسبه پایا، تک‌مسیره و با یک قطر مرجع است. اختلاف ارتفاع، TDH پمپ، شبکه شاخه‌دار، منحنی پمپ، NPSH و ضربه قوچ در این مخزن محاسبه نمی‌شوند. ضرایب K تقریبی‌اند و همه با سرعت لوله مرجع همین محاسبه ارزیابی می‌شوند.
 
 See [the bilingual engineering guide](docs/ENGINEERING_GUIDE_FA_EN.md) for the full explanation and worked example.
+
+## Suitable applications | موارد کاربرد مناسب
+- **EN:** Estimating steady-state friction loss in one straight pipe section with a single internal diameter, flow rate, material roughness and length.
+- **FA:** تخمین افت اصطکاکی پایا در یک بخش لوله مستقیم با یک قطر داخلی، دبی، زبری جنس و طول مشخص.
+- **EN:** Adding approximate minor losses for fittings and valves represented by K values, using the same reference pipe velocity.
+- **FA:** افزودن افت موضعی تقریبی اتصالات و شیرآلات با ضرایب K و بر اساس سرعت مرجع همان لوله.
+- **EN:** Comparing flow velocity, Reynolds number, flow regime, Darcy friction factor, head loss and equivalent pressure drop.
+- **FA:** مقایسه سرعت، عدد رینولدز، رژیم جریان، ضریب اصطکاک Darcy، افت هد و افت فشار معادل.
+
+## Engineering scope and limitations | محدوده مهندسی و محدودیت‌ها
+**What one calculation represents | مفهوم یک محاسبه**
+- One steady flow rate through one pipe bore and one straight-pipe length. | یک دبی پایا در یک قطر داخلی و یک طول مستقیم لوله.
+- One absolute roughness value for that pipe section. | یک مقدار زبری مطلق برای همان بخش لوله.
+- A total K value for selected fittings, evaluated with the velocity in that same reference pipe. | مجموع K اتصالات انتخابی که با سرعت همان لوله مرجع محاسبه می‌شود.
+
+**Not covered by this tool | موارد خارج از محدوده**
+- No sequence of pipe segments with different diameters, materials, elevations or flow rates is solved automatically. | چند بخش متوالی با قطر، جنس، ارتفاع یا دبی متفاوت به‌صورت خودکار حل نمی‌شوند.
+- No branched network, flow distribution, pressure balancing or network solver. | شبکه شاخه‌دار، توزیع دبی، بالانس فشار یا حل شبکه وجود ندارد.
+- No static elevation head, pump TDH, pump curve, NPSH, water hammer or transient analysis. | هد استاتیکی، TDH پمپ، منحنی پمپ، NPSH، ضربه قوچ یا تحلیل گذرا محاسبه نمی‌شود.
+- Equipment pressure drops such as filters, RO skids or heat exchangers are not part of this calculator. | افت فشار تجهیزاتی مانند فیلترها، اسکید RO یا مبدل حرارتی در این محاسبه‌گر وارد نشده است.
+- K values and EC-based fluid properties are estimates; actual geometry, measured pressure drops and laboratory properties may be required. | ضرایب K و خواص مبتنی بر EC تخمینی‌اند؛ ممکن است هندسه واقعی، افت فشار اندازه‌گیری‌شده و خواص آزمایشگاهی لازم باشند.
+
+**Practical rule | قاعده عملی:** If a line has several diameters, calculate each uniform-diameter section separately and sum the head losses; calculate each fitting group using the velocity and diameter to which its K value applies. Use a network-capable hydraulic model for branched systems.
