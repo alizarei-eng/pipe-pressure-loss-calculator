@@ -11,8 +11,10 @@
 `hm=ΣK(V²/2g)`
 `ΔP=ρg(hf+hm)`
 
+ضریب اصطکاک از نوع Darcy است. برای جریان آرام از رابطه 64/Re و برای جریان آشفته از رابطه Colebrook-White استفاده می‌شود.
+
 ### مثال
-برای Q=50 m³/h، قطر داخلی 100 mm، طول 100 m، زبری 0.0015 mm و مجموع K=5، سرعت حدود 1.768 m/s است. با f≈0.0158، افت طولی حدود 2.52 m و افت موضعی حدود 0.80 m است؛ افت کل حدود 3.31 m و افت فشار حدود 0.32 bar خواهد بود.
+برای Q=50 m³/h، قطر داخلی ۱۰۰ mm، طول ۱۰۰ m، زبری ۰٫۰۰۱۵ mm و مجموع K برابر ۵، سرعت حدود ۱٫۷۶۸ m/s است. با f≈0.0158، افت طولی حدود ۲٫۵۲ m و افت موضعی حدود ۰٫۸۰ m است؛ افت کل حدود ۳٫۳۱ m و افت فشار حدود ۰٫۳۲ bar خواهد بود.
 
 ### کاربردها
 محاسبه افت یک بخش مستقیم، مقایسه قطر و زبری و بررسی سهم اتصالات در افت فشار.
@@ -30,6 +32,8 @@ This application calculates major and minor losses for one steady-flow pipe sect
 `hf=f(L/D)(V²/2g)`
 `hm=ΣK(V²/2g)`
 `ΔP=ρg(hf+hm)`
+
+The friction factor is Darcy. Laminar flow uses 64/Re and turbulent flow uses the Colebrook-White equation.
 
 ### Worked example
 For Q=50 m³/h, ID=100 mm, L=100 m, roughness=0.0015 mm and total K=5, velocity is about 1.768 m/s. With f≈0.0158, major loss is about 2.52 m and minor loss about 0.80 m; total loss is about 3.31 m and pressure drop about 0.32 bar.
