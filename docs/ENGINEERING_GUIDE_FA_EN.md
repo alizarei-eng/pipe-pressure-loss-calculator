@@ -87,3 +87,20 @@ The calculation is steady-state and single-path. It does not include elevation, 
 ```bash
 python -m unittest discover -s tests -v
 ```
+
+## 12. Suitable applications and decision boundary | موارد کاربرد و مرز استفاده
+**EN:** Use this calculator for a single, steady-flow pipe section when its flow rate, internal diameter, length, roughness and fitting K values are known or can be estimated. It is suitable for preliminary pressure-drop checks, comparing pipe sizes or roughness assumptions, and understanding the contribution of fittings.
+
+**FA:** این محاسبه‌گر برای یک بخش لوله با جریان پایا مناسب است؛ زمانی که دبی، قطر داخلی، طول، زبری و ضرایب K اتصالات معلوم یا قابل تخمین باشند. از آن برای کنترل اولیه افت فشار، مقایسه قطرها یا زبری‌ها و بررسی سهم اتصالات استفاده کنید.
+
+**Example | مثال:** A 100 m straight section with ID=100 mm carries 50 m³/h. The program calculates velocity and Reynolds number, then major loss. If the selected fittings have total K=5, their minor loss is calculated using the velocity in this same 100 mm reference pipe. The output is the head loss for this section and its entered fittings—not the complete plant's pump TDH.
+
+**FA:** برای نمونه، یک لوله مستقیم ۱۰۰ متری با قطر داخلی ۱۰۰ میلی‌متر و دبی ۵۰ مترمکعب بر ساعت بررسی می‌شود. برنامه سرعت و Reynolds و سپس افت طولی را محاسبه می‌کند. اگر مجموع K اتصالات ۵ باشد، افت موضعی با سرعت همین لوله ۱۰۰ میلی‌متری محاسبه می‌شود. خروجی مربوط به همین بخش و اتصالات واردشده است، نه TDH کامل کارخانه.
+
+**When to split the calculation | چه زمانی محاسبه را تفکیک کنیم؟**
+- Different pipe diameters or materials along the route: calculate each uniform section separately. | قطر یا جنس لوله در طول مسیر تغییر می‌کند: هر بخش یکنواخت را جداگانه محاسبه کنید.
+- Fittings installed on a different diameter: calculate their K loss with the velocity in the relevant diameter, not the main section's velocity. | اتصالات روی قطر دیگری نصب شده‌اند: افت آن‌ها را با سرعت همان قطر محاسبه کنید، نه سرعت بخش اصلی.
+- Flow divides or combines: use a branched-network solver. | دبی تقسیم یا ترکیب می‌شود: از حل‌کننده شبکه شاخه‌دار استفاده کنید.
+- Elevation, equipment differential pressure or pump duty matters: use a TDH/system calculation that includes those terms. | ارتفاع، افت فشار تجهیزات یا وظیفه پمپ مهم است: از محاسبه TDH/سیستم با این مؤلفه‌ها استفاده کنید.
+
+The tool reports a Darcy friction factor. Do not mix it with a Fanning friction factor. Transitional Reynolds numbers (2300–4000) are flagged because friction-factor prediction is uncertain. The EC-derived fluid model is for screening only; use measured properties for concentrated brine or critical design.
