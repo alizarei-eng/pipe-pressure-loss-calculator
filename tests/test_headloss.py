@@ -31,6 +31,16 @@ class TestHeadLoss(unittest.TestCase):
         self.assertGreater(result["velocity_m_s"], 0)
         self.assertGreater(result["reynolds"], 0)
 
+    def test_supplied_fluid_properties_change_reynolds_and_pressure(self):
+        default = calculate_head_loss(50, 100, 0.1, 0.0015, 2.0)
+        seawater = calculate_head_loss(
+            50, 100, 0.1, 0.0015, 2.0,
+            density_kg_m3=1023.0,
+            kinematic_viscosity_m2_s=0.95e-6,
+        )
+        self.assertNotEqual(default["reynolds"], seawater["reynolds"])
+        self.assertGreater(seawater["pressure_drop_bar"], default["pressure_drop_bar"])
+
     def test_invalid_diameter(self):
         with self.assertRaises(ValueError):
             calculate_head_loss(10, 100, 0, 0.0015)
